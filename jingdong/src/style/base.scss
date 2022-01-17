@@ -1,0 +1,35 @@
+html {
+  font-size: 100px;
+}
+
+body {
+  font-size: 0.12rem;
+}
+
+.iconfont {
+  font-size: 0.16rem;
+  margin: 0.07rem 0 0.02rem 0;
+}
+
+/*包含以下四种的链接*/
+a {
+  text-decoration: none;
+  color: #fff;
+}
+/*正常的未被访问过的链接*/
+a:link {
+  text-decoration: none;
+}
+/*已经访问过的链接*/
+a:visited {
+  text-decoration: none;
+  color: #fff;
+}
+/*鼠标划过(停留)的链接*/
+a:hover {
+  text-decoration: none;
+}
+/* 正在点击的链接*/
+a:active {
+  text-decoration: none;
+}

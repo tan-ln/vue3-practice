@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <script>
+      (function() {
+        function resize() {
+          // 当前设备宽度
+          var width = document.documentElement.clientWidth || document.body;
+          // 计算比例 当前宽度 / 开发环境宽度(iPhone 6/7/8)
+          var ratio = width / 375;
+          // 当前环境字体 = 开发环境字体 100px 计算的 rem * 比例
+          var fontSize = 100 * ratio;
+          document.getElementsByTagName('html')[0].style['font-size'] = fontSize + 'px';
+        }
+
+        resize()
+
+        // 移动端 屏幕方向发生改变后触发 或 resize 后
+        window.addEventListener('onorientationchange', () => {
+          resize()
+        })
+        // resize
+        window.addEventListener('resize', () => {
+          resize()
+        })
+        // window.onload()
+        window.addEventListener('DOMContentLoaded', () => resize())
+      })(document, window)
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

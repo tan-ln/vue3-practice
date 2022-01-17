@@ -1,0 +1,11 @@
+@mixin ellipse {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+@mixin cleaninput {
+  background: none;
+  outline: none;
+  border: 0px;
+}
