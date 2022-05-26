@@ -1,21 +1,3 @@
-# Try Vite
-
-Vite 构建工具，，使用 ，插件丰富
-
-优势：
-- 冷服务，基于 ESModule 通过 script 标签 （webpack 需要先打包）
-```html
-<script type="module" src="/src/main.ts"></script>
-```
-- HMR 模块热更新
-- Rollup 打包，支持 Rollup 插件
-
-
-## 异步组件
-打包过程中的阻塞，单独打包，异步加载
-
-## pinia 代替 vuex
-```ts
 import { defineStore } from 'pinia'
 import { Names } from './store-name'
 
@@ -37,7 +19,7 @@ const login = (): Promise<User> => {
 
 export const useAuthStore = defineStore(Names.AUTH, {
   state: () => ({
-    a: <number | string> 1,
+    a: <number> 1,
     user: <User> {}
   }),
   // 有缓存 computed
@@ -50,8 +32,8 @@ export const useAuthStore = defineStore(Names.AUTH, {
   },
   // 同步/异步
   actions: {
-    setStateA (num: number | string) {
-      this.a = num || '999'
+    setStateA (num: number) {
+      this.a = num
     },
     setUser () {
       this.user = {
@@ -62,7 +44,7 @@ export const useAuthStore = defineStore(Names.AUTH, {
     async setAsyncUser () {
       const res = await login()
       this.user = res
-      this.setStateA('hhhh')
+      this.setStateA(98765)
     }
   }
 })
@@ -70,4 +52,3 @@ export const useAuthStore = defineStore(Names.AUTH, {
 /**
  * getter 和 action 当中的方法可以互相调用
  */
-```

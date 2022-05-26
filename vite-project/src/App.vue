@@ -1,94 +1,60 @@
 <template>
-  <div class="scroll__wrapper"></div>
-  <LoadingBar />
   <div>
-    <router-link to="/">Home</router-link>
-    <!-- replace 不保留历史记录 -->
-    <router-link replace to="/login">Login</router-link>
-    <router-link :to="{ name: 'User' }">User</router-link>
-    <router-link to="/news">News</router-link>
+    <h1>Test</h1>
+    <h2>{{ Auth.a }}</h2>
+    <button @click="Auth.a++">方法一：count ++</button>
+    <button @click="handleClick">方法二：count ++</button>
+    <button @click="handleClick5">方法五：count ++</button>
+    <button @click="Auth.$reset()">reset 恢复原始值</button>
   </div>
-  <button @click="pathToPage('/login')"> Nav to login</button>
-  <button @click="nameToPage('User')"> Nav to User</button>
-  <button @click="toPage('Cart')"> Nav to Cart</button>
-  <hr />
-  <button @click="prev()">Prev Page</button>
-  <button @click="next()">Next Page</button>
-
-  <router-view #default="{ route, Component }">
-    <transition
-      :duration="1000"
-      :enter-active-class="`animate__animated ${route.meta.transition?.enter}`"
-      :leave-active-class="`animate__animated ${route.meta.transition?.leave}`"
-    >
-      <component :is="Component"></component>
-    </transition>
-  </router-view>
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import LoadingBar from './components/Loading/LoadingBar.vue';
-import 'animate.css'
+import { useAuthStore } from './store'
+const Auth = useAuthStore()
 
-const router = useRouter()
-const pathToPage = (url: string) => {
-  // router.push(url)
-  router.push({
-    path: url,
-    query: {
-      id: '123'
-    }
+const handleClick = () => {
+  // 支持批量修改
+  Auth.$patch({
+    a: 123
   })
-
-  // 不保留历史记录
-  // router.replace({
-  //   path: url
+  // 3. 函数，可以进行业务逻辑的书写
+  // Auth.$patch((state) => {
+  //  if (1) {
+  //    state.a = 500
+  //  }
   // })
+  // 4. 直接覆盖整个对象
+  // Auth.$state = {
+  //   a: 10000
+  // }
 }
-const nameToPage = (url: string) => {
-  router.push({
-    name: url,
-    // params 必须使用 router name 传参
-    params: {
-      username: 'tang'
-    }
+
+// 5. action
+const handleClick5 = () => {
+  Auth.setStateA(567)
+}
+
+// 解构不具有响应式
+// const { a } = Auth
+// 可以使用 storeToRefs(Auth)
+// const { a } = storeToRefs(Auth)
+
+// 观察 state 当中的值的变化，任何值的变化都会触发此函数
+Auth.$subscribe((args, state) => {
+  console.log(args)
+  console.log(state)
+})
+
+// 监听 action 方法的调用
+Auth.$onAction((args) => {
+  args.after(() => {
+    console.log('after')
   })
-}
-
-const toPage = (url: string) => {
-  router.push({
-    name: url,
-    // params 必须使用 router name 传参
-    // 参数存于内存，刷新丢失
-    // 使用动态路由参数解决 path: '/user/:username'
-    params: {
-      id: 'tang_id'
-    }
-  })
-}
-
-const prev = () => {
-  router.back()
-}
-
-const next = () => {
-  // router.go(-1)
-  router.go(1)
-}
+  console.log(args)
+}, true) // 组件销毁后继续监听
 
 </script>
 
-<style scoped>
-a {
-  margin-left: 20px;
-}
-button {
-  margin-top: 20px;
-  margin-right: 10px;
-}
-.scroll__wrapper {
-  height: 1000px;
-  background-color: rgba(0, 0, 0, .4);
-}
+<style lang="scss" scoped>
 </style>
